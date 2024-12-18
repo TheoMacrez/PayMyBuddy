@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `transaction` (
 CREATE TABLE IF NOT EXISTS `connection` (
   `user_id_1` INT NOT NULL,
   `user_id_2` INT NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id_1`, `user_id_2`),
   CONSTRAINT `fk_connection_user1`
     FOREIGN KEY (`user_id_1`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
