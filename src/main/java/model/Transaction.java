@@ -5,25 +5,22 @@ import lombok.*;
 
 import java.time.*;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "transaction")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private int transactionId;
+    private int id;
 
-    @Column(name="description")
     private String description;
 
-    @Column(name="amount",nullable = false)
+    @Column(nullable = false)
     private double amount;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
@@ -33,4 +30,8 @@ public class Transaction {
     @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
+    // Méthode pour calculer le montant après prélèvement
+    public double getNetAmount() {
+        return amount * 0.995; // 0.5% de commission
+    }
 }

@@ -6,50 +6,53 @@ import lombok.*;
 import java.time.*;
 import java.util.*;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private int userId;
+    private int id;
 
-    @Column(name="name")
-    private String userName;
+    private String name;
+    private String email;
+    private String password;
 
-    @Column(name="email")
-    private String userEmail;
+    @Column(name="balance")
+    private double balance = 0.0;
 
-    @Column(name="password")
-    private String userPassword;
+    @Column(name = "create_time",
+            nullable = false,
+            updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "create_time", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "sender",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Transaction> sentTransactions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> sentTransactions;
+    @OneToMany(mappedBy = "receiver",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Transaction> receivedTransactions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> receivedTransactions;
-
-    // Relation many-to-many avec l'entité User (table d'association connection)
-    @ManyToMany
-            (
-                    fetch = FetchType.LAZY,
-                    cascade = {
-                            CascadeType.PERSIST,
-                            CascadeType.MERGE
-                    }
-            )
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "connection",  // Nom de la table d'association
-            joinColumns = @JoinColumn(name = "user_id_1"),  // Colonne de jointure dans connection pour l'utilisateur 1
-            inverseJoinColumns = @JoinColumn(name = "user_id_2") // Colonne de jointure dans connection pour l'utilisateur 2
+            name = "connection",
+            joinColumns = @JoinColumn(name = "user_id_1"),
+            inverseJoinColumns = @JoinColumn(name = "user_id_2")
     )
-    private List<User> connections;  // Liste des utilisateurs connectés à cet utilisateur
+    private List<User> connections = new ArrayList<>();
 
+    // Méthodes pour ajouter/retirer des connexions
+    public void addConnection(User user) {
+        connections.add(user);
+        user.getConnections().add(this);
+    }
 
+    public void removeConnection(User user) {
+        connections.remove(user);
+        user.getConnections().remove(this);
+    }
 }

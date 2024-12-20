@@ -13,23 +13,32 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     public Optional<User> getUserById(Integer id) {
         return userRepository.findById(id);
     }
 
-    // Récupérer un utilisateur par email et mot de passe
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
+        // Ajouter une vérification de sécurité ici
         return userRepository.findByEmailAndPassword(email, password);
     }
 
-    // Supprimer un utilisateur par ID
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
     }
 
     public User saveUser(User user) {
+        // Validation pour s'assurer que l'utilisateur n'existe pas déjà
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Cet email est déjà utilisé !");
+        }
+        // Hachage du mot de passe avant de le sauvegarder
+        user.setPassword(hashPassword(user.getPassword()));
         return userRepository.save(user);
     }
 
+    private String hashPassword(String password) {
+        // Implémentation du hachage (par exemple, avec BCrypt)
+        return password; // Remplace par le vrai hachage
+    }
 }
+
