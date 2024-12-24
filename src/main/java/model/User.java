@@ -1,7 +1,7 @@
 package model;
 
 import jakarta.persistence.*;
-import lombok.*;
+
 
 import java.sql.Connection;
 import java.time.*;
@@ -126,5 +126,18 @@ public class User {
 
     public void setConnections(List<User> connections) {
         this.connections = connections;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return id != 0 && id == user.id; // Comparer par ID
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
