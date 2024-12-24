@@ -1,6 +1,8 @@
 package model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,5 +141,36 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Retourner les rôles de l'utilisateur ici, par exemple :
+        return Collections.emptyList(); // Remplacez par vos rôles
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // Utiliser l'email comme nom d'utilisateur
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Modifier selon votre logique
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Modifier selon votre logique
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Modifier selon votre logique
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Modifier selon votre logique
     }
 }
