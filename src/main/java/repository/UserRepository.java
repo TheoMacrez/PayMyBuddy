@@ -10,8 +10,7 @@ import java.util.*;
 @Repository
 public interface UserRepository extends CrudRepository<User,Integer> {
 
-    // Méthode personnalisée pour récupérer un utilisateur par email et mot de passe
-    Optional<User> findByEmailAndPassword(String email, String password);
+
 
     // Méthode personnalisée pour récupérer un utilisateur par email
     Optional<User> findByEmail(String email);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
 import repository.*;
 
@@ -16,6 +17,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -28,9 +32,15 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
-        // Ajouter une vérification de sécurité ici
-        return userRepository.findByEmailAndPassword(email, password);
+        // Récupérer l'utilisateur par email
+        Optional<User> user = userRepository.findByEmail(email);
+        // Vérifier si l'utilisateur est présent et le mot de passe correspond
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+            return user; // Retourner l'utilisateur si le mot de passe est correct
+        }
+        return Optional.empty(); // Retourner vide si l'utilisateur n'existe pas ou le mot de passe est incorrect
     }
+
 
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
@@ -47,8 +57,8 @@ public class UserService implements UserDetailsService {
     }
 
     private String hashPassword(String password) {
-        // Implémentation du hachage (par exemple, avec BCrypt)
-        return password; // Remplace par le vrai hachage
+        return passwordEncoder.encode(password); // Utiliser l'encodeur ici
     }
+
 }
 

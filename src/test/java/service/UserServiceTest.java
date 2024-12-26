@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import repository.UserRepository;
 
 import java.util.Optional;
@@ -21,6 +22,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() {
@@ -43,18 +47,49 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByEmailAndPassword() {
+    public void testGetUserByEmailAndPassword_Success() {
         User user = new User();
         user.setId(1);
         user.setEmail("test@example.com");
-        user.setPassword("password");
+        user.setPassword("$2a$10$EIX/4lF5y7P8yZ5QfG2i0O5n1F5Zg3YwYgXy5E1p5Y5u5Y5u5Y5u5"); // Mot de passe haché
 
-        when(userRepository.findByEmailAndPassword("test@example.com", "password")).thenReturn(Optional.of(user));
+        String rawPassword = "password"; // Mot de passe en clair
 
-        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", "password");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPassword, user.getPassword())).thenReturn(true);
+
+        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(user);
+    }
+
+    @Test
+    public void testGetUserByEmailAndPassword_UserNotFound() {
+        String rawPassword = "password";
+
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+
+        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
+
+        assertThat(result).isNotPresent();
+    }
+
+    @Test
+    public void testGetUserByEmailAndPassword_IncorrectPassword() {
+        User user = new User();
+        user.setId(1);
+        user.setEmail("test@example.com");
+        user.setPassword("$2a$10$EIX/4lF5y7P8yZ5QfG2i0O5n1F5Zg3YwYgXy5E1p5Y5u5Y5u5Y5u5"); // Mot de passe haché
+
+        String rawPassword = "wrongPassword";
+
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPassword, user.getPassword())).thenReturn(false);
+
+        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
+
+        assertThat(result).isNotPresent();
     }
 
     @Test

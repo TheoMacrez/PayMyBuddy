@@ -145,8 +145,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Retourner les rôles de l'utilisateur ici, par exemple :
-        return Collections.emptyList(); // Remplacez par vos rôles
+        // Retourne les rôles de l'utilisateur ici
+        return Collections.emptyList();
     }
 
     @Override
@@ -154,23 +154,5 @@ public class User implements UserDetails {
         return email; // Utiliser l'email comme nom d'utilisateur
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true; // Modifier selon votre logique
-    }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true; // Modifier selon votre logique
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true; // Modifier selon votre logique
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true; // Modifier selon votre logique
-    }
 }
