@@ -9,7 +9,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import repository.TransactionRepository;
 import repository.UserRepository;
+import util.InsufficientFundsException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,7 +101,7 @@ public class TransactionServiceTest {
 
         try {
             transactionService.saveTransaction(transaction);
-        } catch (RuntimeException e) {
+        } catch (InsufficientFundsException e) {
             assertThat(e.getMessage()).isEqualTo("Fonds insuffisants !");
         }
 
@@ -106,5 +109,33 @@ public class TransactionServiceTest {
         assertThat(sender.getBalance()).isEqualTo(10.0);
         assertThat(receiver.getBalance()).isEqualTo(50.0);
     }
+
+    @Test
+    public void testGetAllTransactionsForUser() {
+        List<Transaction> senderTransactions = new ArrayList<>();
+        List<Transaction> receiverTransactions = new ArrayList<>();
+
+        Transaction transaction1 = new Transaction();
+        transaction1.setSender(sender);
+        transaction1.setReceiver(receiver);
+        transaction1.setAmount(20.0);
+        senderTransactions.add(transaction1);
+
+        Transaction transaction2 = new Transaction();
+        transaction2.setSender(receiver);
+        transaction2.setReceiver(sender);
+        transaction2.setAmount(10.0);
+        receiverTransactions.add(transaction2);
+
+        when(transactionRepository.findBySender(sender)).thenReturn(senderTransactions);
+        when(transactionRepository.findByReceiver(sender)).thenReturn(receiverTransactions);
+
+        List<Transaction> transactions = transactionService.getAllTransactionsForUser(sender);
+
+        assertThat(transactions).hasSize(2);
+        assertThat(transactions).contains(transaction1, transaction2);
+    }
+
+
 }
 

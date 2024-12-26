@@ -6,6 +6,7 @@ import model.Transaction;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import repository.*;
+import util.InsufficientFundsException;
 
 import java.util.*;
 
@@ -30,7 +31,7 @@ public class TransactionService {
     public Transaction saveTransaction(Transaction transaction) {
         // Vérification du solde de l'expéditeur
         if (transaction.getSender().getBalance() < transaction.getAmount()) {
-            throw new RuntimeException("Fonds insuffisants !");
+            throw new InsufficientFundsException("Fonds insuffisants !");
         }
         // Mettre à jour les soldes
         transaction.getSender().setBalance(transaction.getSender().getBalance() - transaction.getAmount());
@@ -40,6 +41,13 @@ public class TransactionService {
         userRepository.save(transaction.getReceiver());
 
         return transactionRepository.save(transaction);
+    }
+
+    public List<Transaction> getAllTransactionsForUser(User user) {
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.addAll(transactionRepository.findBySender(user));
+        transactions.addAll(transactionRepository.findByReceiver(user));
+        return transactions;
     }
 }
 
