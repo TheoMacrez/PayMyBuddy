@@ -1,9 +1,11 @@
-package service;
+package com.openclassrooms.PayMyBuddy.service;
 
-import model.*;
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import repository.*;
+
 
 import java.util.*;
 

@@ -1,12 +1,15 @@
-package service;
+package com.openclassrooms.PayMyBuddy.service;
 
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.TransactionRepository;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 import jakarta.transaction.*;
-import model.*;
-import model.Transaction;
+
+import com.openclassrooms.PayMyBuddy.model.Transaction;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
-import repository.*;
-import util.InsufficientFundsException;
+
+import com.openclassrooms.PayMyBuddy.util.InsufficientFundsException;
 
 import java.util.*;
 

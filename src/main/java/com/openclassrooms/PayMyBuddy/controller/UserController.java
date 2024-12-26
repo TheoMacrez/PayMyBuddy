@@ -1,10 +1,10 @@
-package controller;
+package com.openclassrooms.PayMyBuddy.controller;
 
-import model.User;
+import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import com.openclassrooms.PayMyBuddy.service.UserService;
 
 import java.util.Optional;
 

@@ -1,15 +1,16 @@
-package service;
+package com.openclassrooms.PayMyBuddy.service;
 
-import model.Transaction;
-import model.User;
+import com.openclassrooms.PayMyBuddy.model.Transaction;
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import repository.TransactionRepository;
-import repository.UserRepository;
-import util.InsufficientFundsException;
+import com.openclassrooms.PayMyBuddy.repository.TransactionRepository;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
+import com.openclassrooms.PayMyBuddy.util.InsufficientFundsException;
 
 import java.util.ArrayList;
 import java.util.List;

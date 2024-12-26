@@ -1,13 +1,14 @@
-package service;
+package com.openclassrooms.PayMyBuddy.service;
 
-import model.User;
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import repository.UserRepository;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
 import java.util.Optional;
 

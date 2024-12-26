@@ -1,4 +1,4 @@
-package model;
+package com.openclassrooms.PayMyBuddy.model;
 
 import jakarta.persistence.*;
 

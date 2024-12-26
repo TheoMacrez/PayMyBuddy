@@ -1,11 +1,10 @@
-package model;
+package com.openclassrooms.PayMyBuddy.model;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.sql.Connection;
 import java.time.*;
 import java.util.*;
 

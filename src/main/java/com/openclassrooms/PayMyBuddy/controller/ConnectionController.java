@@ -1,4 +1,4 @@
-package controller;
+package com.openclassrooms.PayMyBuddy.controller;
 
 import org.springframework.web.bind.annotation.*;
 

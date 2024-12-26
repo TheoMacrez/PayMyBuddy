@@ -1,8 +1,9 @@
-package repository;
+package com.openclassrooms.PayMyBuddy.repository;
 
-import model.*;
+import com.openclassrooms.PayMyBuddy.model.Transaction;
+import com.openclassrooms.PayMyBuddy.model.User;
+
 import org.springframework.data.repository.*;
-import org.springframework.stereotype.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

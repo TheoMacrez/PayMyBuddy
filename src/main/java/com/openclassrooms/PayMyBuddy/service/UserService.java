@@ -1,14 +1,15 @@
-package service;
+package com.openclassrooms.PayMyBuddy.service;
 
-import config.SpringSecurityConfig;
-import model.*;
+import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
-import repository.*;
+
 
 import java.util.*;
 
@@ -57,7 +58,7 @@ public class UserService implements UserDetailsService {
     }
 
     private String hashPassword(String password) {
-        return passwordEncoder.encode(password); // Utiliser l'encodeur ici
+        return passwordEncoder.encode(password); 
     }
 
 }
