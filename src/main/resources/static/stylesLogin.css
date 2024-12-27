@@ -7,8 +7,9 @@
     margin: 50px auto; /* Centrage vertical et horizontal */
     padding: 20px; /* Espacement interne */
     border: 3px solid #ccc; /* Bordure de 3 pixels */
+    border-color: #000000;
     border-radius: 0; /* Pas de coins arrondis */
-    background-color: #f9f9f9; /* Couleur de fond */
+    background-color: #FFFFFF /* Couleur de fond */
     opacity: 1; /* Assurez-vous que l'opacité est à 100% */
 }
 
@@ -40,6 +41,13 @@
     border-radius: 8px; /* Coins arrondis */
     padding: 10px; /* Espacement interne */
     box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
+}
+/* Styles des placeholders */
+.input-field::placeholder {
+    color: #828282; /* Couleur du texte du placeholder */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-weight: bold; /* Texte en gras */
+    font-size: 24px; /* Taille de la police */
 }
 
 /* Style du bouton PayMyBuddy */

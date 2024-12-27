@@ -22,7 +22,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/signup", "/users/login").permitAll() // Autoriser l'accès aux pages de connexion et d'inscription
+                        .requestMatchers("/users/signup", "/users/login","/**").permitAll() // Autoriser l'accès aux pages de connexion et d'inscription
                         .anyRequest().authenticated() // Toute autre requête nécessite une authentification
                 )
                 .formLogin(form -> form
