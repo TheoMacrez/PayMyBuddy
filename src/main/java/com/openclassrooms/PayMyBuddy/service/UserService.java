@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
     }
 
     private String hashPassword(String password) {
-        return passwordEncoder.encode(password); 
+        return passwordEncoder.encode(password);
     }
 
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - PayMyBuddy</title>
+    <link rel="stylesheet" href="/stylesLogin.css"> <!-- Lien vers ton fichier CSS -->
+</head>
+<body>
+<div class="login-container">
+    <form class="login-form"th:action="@{/users/login}" method="post">
+        <button class="button-paymybuddy">Pay My Buddy</button>
+        <div class="form-group">
+            <label class="label" for="email">Mail</label>
+            <input type="email" id="email" name="email" class="input-field" required>
+        </div>
+        <div class="form-group">
+            <label class="label" for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" class="input-field" required>
+        </div>
+        <button class="button-submit">Se connecter</button>
+    </form>
+</div>
+</body>
+</html>
