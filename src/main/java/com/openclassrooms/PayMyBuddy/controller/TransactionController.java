@@ -2,38 +2,40 @@ package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.model.Transaction;
 import com.openclassrooms.PayMyBuddy.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.util.InsufficientFundsException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-@RestController
-@RequestMapping("transactions")
+@Controller
+@RequestMapping("/transactions")
 public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
 
+    // Afficher toutes les transactions pour l'utilisateur connecté
+    @GetMapping
+    public String getTransactionsForUser(@AuthenticationPrincipal User user, Model model) {
+        List<Transaction> transactions = transactionService.getAllTransactionsForUser(user);
+        model.addAttribute("transactions", transactions);
+        return "transactions"; // Nom de la vue Thymeleaf
+    }
+
+    // Créer une nouvelle transaction
     @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
+    public String createTransaction(@ModelAttribute Transaction transaction, @AuthenticationPrincipal User user) {
+        transaction.setSender(user); // L'utilisateur connecté est l'expéditeur
         try {
-            Transaction createdTransaction = transactionService.saveTransaction(transaction);
-            return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
+            transactionService.saveTransaction(transaction);
+            return "redirect:/transactions"; // Rediriger vers la liste des transactions
         } catch (InsufficientFundsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return "error"; // Afficher une page d'erreur (à créer)
         }
     }
-
-    @GetMapping
-    public ResponseEntity<List<Transaction>> getTransactionsForUser(@AuthenticationPrincipal User user) {
-        List<Transaction> transactions = transactionService.getAllTransactionsForUser(user);
-        return ResponseEntity.ok(transactions);
-    }
 }
-

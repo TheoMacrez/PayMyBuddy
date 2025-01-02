@@ -11,6 +11,7 @@ import java.util.*;
 
 @Service
 public class ConnectionService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -32,6 +33,10 @@ public class ConnectionService {
             user2.getConnections().remove(user1);
             userRepository.saveAll(Arrays.asList(user1, user2)); // Sauvegarde en une seule opération
         }
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email); // Assurez-vous que cette méthode est définie dans UserRepository
     }
 }
 
