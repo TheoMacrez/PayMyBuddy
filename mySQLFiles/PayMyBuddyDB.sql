@@ -41,3 +41,11 @@ CREATE TABLE IF NOT EXISTS `connection` (
     FOREIGN KEY (`user_id_2`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 
+-- Insérer des utilisateurs dans la table user
+INSERT INTO `user` (`name`, `email`, `password`, `balance`, `create_time`) VALUES
+('Alice Dupont', 'alice.dupont@example.com', 'password123', 100.50, NOW()),
+('Bob Martin', 'bob.martin@example.com', 'password456', 250.00, NOW()),
+('Chloé Bernard', 'chloe.bernard@example.com', 'password789', 75.25, NOW()),
+('David Lefevre', 'david.lefevre@example.com', 'password321', 0.00, NOW()),
+('Emma Dubois', 'emma.dubois@example.com', 'password654', 500.00, NOW());
+

@@ -1,0 +1,36 @@
+/* stylesHeader.css */
+
+/* Styles du header */
+header {
+    background-color: white; /* Couleur de fond blanche */
+    color: black; /* Couleur du texte en noir pour un bon contraste */
+    padding: 10px 20px; /* Espacement intérieur : 10px en haut et en bas, 20px à gauche et à droite */
+    font-family: 'Inter', sans-serif; /* Utilisation de la police Inter */
+}
+
+.header-container {
+    display: flex; /* Utilise Flexbox pour aligner les éléments */
+    justify-content: space-between; /* Espace entre les éléments enfants (h1 et nav) */
+    align-items: center; /* Aligne les éléments verticalement au centre */
+}
+
+nav ul {
+    list-style-type: none; /* Supprime les puces de la liste */
+    margin: 0; /* Supprime la marge par défaut */
+    padding: 0; /* Supprime le remplissage par défaut */
+}
+
+nav ul li {
+    display: inline; /* Affiche les éléments de la liste en ligne (horizontalement) */
+    margin-left: 20px; /* Espace à gauche de chaque élément de la liste */
+}
+
+nav ul li a {
+    color: black; /* Couleur du texte des liens en noir */
+    text-decoration: none; /* Supprime le soulignement par défaut des liens */
+    font-weight: bold; /* Met le texte en gras */
+}
+
+nav ul li a:hover {
+    text-decoration: underline; /* Ajoute un soulignement au survol du lien */
+}

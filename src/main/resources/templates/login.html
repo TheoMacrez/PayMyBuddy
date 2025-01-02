@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - PayMyBuddy</title>
     <link rel="stylesheet" th:href="@{/stylesLogin.css}">
-    <!-- Lien vers ton fichier CSS -->
+
 </head>
 <body>
 <div class="login-container">
@@ -18,7 +18,14 @@
             <input type="password" id="password" name="password" class="input-field" placeholder="Mot de passe" required>
         </div>
         <button class="button-submit">Se connecter</button>
+        <!-- Message d'erreur -->
+        <div th:if="${errorMessage}" class="error-message" style="color: red;">
+            <p th:text="${errorMessage}"></p>
+        </div>
     </form>
+</div>
+<div th:if="${errorMessage}" class="error-message" style="color: red;">
+    <p th:text="${errorMessage}"></p>
 </div>
 </body>
 </html>

@@ -33,12 +33,13 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, Model model) {
         Optional<User> user = userService.getUserByEmailAndPassword(email, password);
+        System.out.println("Tentative de connexion avec Email: " + email + " et Mot de passe: " + password);
 
         if (user.isPresent()) {
             // Authentification réussie
             // Ici, tu peux stocker l'utilisateur dans la session si nécessaire
             // Par exemple : session.setAttribute("user", user.get());
-            return "redirect:/home"; // Redirection vers la page d'accueil
+            return "redirect:/users/profile"; // Redirection vers la page d'accueil
         } else {
             // Authentification échouée
             model.addAttribute("errorMessage", "Email ou mot de passe incorrect.");
@@ -53,49 +54,13 @@ public class UserController {
         return "redirect:/users/login"; // Redirection vers la page de connexion après inscription
     }
 
-//    // Endpoint pour créer un utilisateur
-//    @PostMapping
-//    public ResponseEntity<User> createUser(@RequestBody User user) {
-//        User createdUser = userService.saveUser(user);
-//        return ResponseEntity.ok(createdUser);
-//    }
-//
-//    // Endpoint pour récupérer un utilisateur par ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUserById(@PathVariable int id) {
-//        Optional<User> user = userService.getUserById(id);
-//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // Endpoint pour récupérer un utilisateur par email et mot de passe
-//    @PostMapping("/login")
-//    public ResponseEntity<User> getUserByEmailAndPassword(@RequestParam String email, @RequestParam String password) {
-//        Optional<User> user = userService.getUserByEmailAndPassword(email, password);
-//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-//
-//    // Endpoint pour inscrire un nouvel utilisateur
-//    @PostMapping("/signup")
-//    public ResponseEntity<User> registerUser(@RequestBody User user) {
-//        // Ici tu peux ajouter de la logique pour vérifier si l'email est déjà pris avant de créer l'utilisateur
-//        User createdUser = userService.saveUser(user);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-//    }
-//
-//
-//    // Endpoint pour supprimer un utilisateur par ID
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-//        userService.deleteUserById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//    // Endpoint pour récupérer le profil d'un utilisateur
-//    @GetMapping("/profil/{id}")
-//    public ResponseEntity<User> getUserProfile(@PathVariable int id) {
-//        Optional<User> user = userService.getUserById(id);
-//        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
+    @GetMapping("/profile")
+    public String profilePage(Model model, @SessionAttribute("user") User user) {
+        model.addAttribute("username", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("password", user.getPassword()); // Pour des raisons de sécurité, évitez d'afficher le mot de passe
+        return "profile"; // Nom du fichier profile.html dans le dossier templates
+    }
 
 }
 
