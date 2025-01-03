@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.PayMyBuddy.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
@@ -32,8 +35,9 @@ public class UserController {
     // Endpoint pour connecter un utilisateur
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, Model model) {
+
         Optional<User> user = userService.getUserByEmailAndPassword(email, password);
-        System.out.println("Tentative de connexion avec Email: " + email + " et Mot de passe: " + password);
+        logger.debug("Tentative de connexion avec Email: {} et Mot de passe: {}", email, password);
 
         if (user.isPresent()) {
             // Authentification réussie

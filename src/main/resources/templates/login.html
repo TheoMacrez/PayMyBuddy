@@ -9,7 +9,11 @@
 </head>
 <body>
 <div class="login-container">
-    <form class="login-form"th:action="@{/users/login}" method="post">
+    <!-- Message d'erreur -->
+    <div th:if="${errorMessage}" class="error-message" style="color: red;">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <form class="login-form" th:action="@{/users/login}" method="post">
         <button class="button-paymybuddy">Pay My Buddy</button>
         <div class="form-group">
             <input type="email" id="email" name="email" class="input-field" placeholder="Mail" required>
@@ -18,14 +22,8 @@
             <input type="password" id="password" name="password" class="input-field" placeholder="Mot de passe" required>
         </div>
         <button class="button-submit">Se connecter</button>
-        <!-- Message d'erreur -->
-        <div th:if="${errorMessage}" class="error-message" style="color: red;">
-            <p th:text="${errorMessage}"></p>
-        </div>
     </form>
 </div>
-<div th:if="${errorMessage}" class="error-message" style="color: red;">
-    <p th:text="${errorMessage}"></p>
-</div>
+
 </body>
 </html>
