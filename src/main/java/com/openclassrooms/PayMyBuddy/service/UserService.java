@@ -42,6 +42,11 @@ public class UserService implements UserDetailsService {
         return Optional.empty(); // Retourner vide si l'utilisateur n'existe pas ou le mot de passe est incorrect
     }
 
+    public Optional<User> findByEmail(String email) {
+        // Récupérer l'utilisateur par email
+        return userRepository.findByEmail(email);
+    }
+
 
     public void deleteUserById(int id) {
         userRepository.deleteById(id);

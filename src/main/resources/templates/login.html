@@ -10,8 +10,8 @@
 <body>
 <div class="login-container">
     <!-- Message d'erreur -->
-    <div th:if="${errorMessage}" class="error-message" style="color: red;">
-        <p th:text="${errorMessage}"></p>
+    <div th:if="${param.error}" class="error-message" style="color: red;">
+        <p>Identifiants incorrects. Veuillez réessayer.</p>
     </div>
     <form class="login-form" th:action="@{/users/login}" method="post">
         <button class="button-paymybuddy">Pay My Buddy</button>

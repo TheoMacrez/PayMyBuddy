@@ -3,6 +3,7 @@ package com.openclassrooms.PayMyBuddy.controller;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+    
 
     // Page de connexion
     @GetMapping("/login")
@@ -36,19 +38,11 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, Model model) {
 
-        Optional<User> user = userService.getUserByEmailAndPassword(email, password);
-        logger.debug("Tentative de connexion avec Email: {} et Mot de passe: {}", email, password);
+        logger.debug("Tentative de connexion avec Email: {}", email);
 
-        if (user.isPresent()) {
-            // Authentification réussie
-            // Ici, tu peux stocker l'utilisateur dans la session si nécessaire
-            // Par exemple : session.setAttribute("user", user.get());
-            return "redirect:/users/profile"; // Redirection vers la page d'accueil
-        } else {
-            // Authentification échouée
-            model.addAttribute("errorMessage", "Email ou mot de passe incorrect.");
-            return "login"; // Retour à la page de connexion avec un message d'erreur
-        }
+        // Laissez Spring Security gérer l'authentification
+        // En cas d'échec, Spring Security redirigera vers /login?error
+        return "redirect:/users/profile"; // Redirection vers le profil si l'authentification réussit
     }
 
     // Endpoint pour inscrire un nouvel utilisateur
