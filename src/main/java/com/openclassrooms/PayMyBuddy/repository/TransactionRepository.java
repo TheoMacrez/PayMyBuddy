@@ -1,7 +1,7 @@
 package com.openclassrooms.PayMyBuddy.repository;
 
-import com.openclassrooms.PayMyBuddy.model.Transaction;
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.TransactionModel;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 
 import org.springframework.data.repository.*;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends CrudRepository<Transaction,Integer> {
-    List<Transaction> findBySender(User sender);
-    List<Transaction> findByReceiver(User receiver);
+public interface TransactionRepository extends CrudRepository<TransactionModel,Integer> {
+    List<TransactionModel> findBySender(UserModel sender);
+    List<TransactionModel> findByReceiver(UserModel receiver);
 }

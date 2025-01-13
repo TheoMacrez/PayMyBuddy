@@ -1,7 +1,6 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.User;
-import com.openclassrooms.PayMyBuddy.service.UserService;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,14 +33,14 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserById() {
-        User user = new User();
+        UserModel user = new UserModel();
         user.setId(1);
         user.setEmail("test@example.com");
         user.setPassword("password");
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
-        Optional<User> result = userService.getUserById(1);
+        Optional<UserModel> result = userService.getUserById(1);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(user);
@@ -49,7 +48,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserByEmailAndPassword_Success() {
-        User user = new User();
+        UserModel user = new UserModel();
         user.setId(1);
         user.setEmail("test@example.com");
         user.setPassword("$2a$10$EIX/4lF5y7P8yZ5QfG2i0O5n1F5Zg3YwYgXy5E1p5Y5u5Y5u5Y5u5"); // Mot de passe haché
@@ -59,7 +58,7 @@ public class UserServiceTest {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(rawPassword, user.getPassword())).thenReturn(true);
 
-        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
+        Optional<UserModel> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(user);
@@ -71,14 +70,14 @@ public class UserServiceTest {
 
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
-        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
+        Optional<UserModel> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
 
         assertThat(result).isNotPresent();
     }
 
     @Test
     public void testGetUserByEmailAndPassword_IncorrectPassword() {
-        User user = new User();
+        UserModel user = new UserModel();
         user.setId(1);
         user.setEmail("test@example.com");
         user.setPassword("$2a$10$EIX/4lF5y7P8yZ5QfG2i0O5n1F5Zg3YwYgXy5E1p5Y5u5Y5u5Y5u5"); // Mot de passe haché
@@ -88,7 +87,7 @@ public class UserServiceTest {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(rawPassword, user.getPassword())).thenReturn(false);
 
-        Optional<User> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
+        Optional<UserModel> result = userService.getUserByEmailAndPassword("test@example.com", rawPassword);
 
         assertThat(result).isNotPresent();
     }
@@ -104,16 +103,18 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        User user = new User();
+        UserModel user = new UserModel();
         user.setEmail("test@example.com");
         user.setPassword("password");
 
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userRepository.save(any(UserModel.class))).thenReturn(user);
 
-        User savedUser = userService.saveUser(user);
+        UserModel savedUser = userService.saveUser(user);
 
         assertThat(savedUser).isEqualTo(user);
         verify(userRepository, times(1)).save(user);
     }
+
+
 }

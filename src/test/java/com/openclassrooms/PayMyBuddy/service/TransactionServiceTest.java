@@ -1,8 +1,7 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.Transaction;
-import com.openclassrooms.PayMyBuddy.model.User;
-import com.openclassrooms.PayMyBuddy.service.TransactionService;
+import com.openclassrooms.PayMyBuddy.model.TransactionModel;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,24 +30,24 @@ public class TransactionServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private User sender;
-    private User receiver;
+    private UserModel sender;
+    private UserModel receiver;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        sender = new User();
+        sender = new UserModel();
         sender.setId(1);
         sender.setBalance(100.0); // Solde suffisant pour la transaction
 
-        receiver = new User();
+        receiver = new UserModel();
         receiver.setId(2);
         receiver.setBalance(50.0); // Solde initial du récepteur
     }
 
     @Test
     public void testGetTransactionById() {
-        Transaction transaction = new Transaction();
+        TransactionModel transaction = new TransactionModel();
         transaction.setId(1);
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
@@ -56,7 +55,7 @@ public class TransactionServiceTest {
 
         when(transactionRepository.findById(1)).thenReturn(Optional.of(transaction));
 
-        Optional<Transaction> result = transactionService.getTransactionById(1);
+        Optional<TransactionModel> result = transactionService.getTransactionById(1);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(transaction);
@@ -73,15 +72,15 @@ public class TransactionServiceTest {
 
     @Test
     public void testSaveTransaction() {
-        Transaction transaction = new Transaction();
+        TransactionModel transaction = new TransactionModel();
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
         transaction.setAmount(20.0);
 
-        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
-        when(userRepository.save(any(User.class))).thenReturn(sender).thenReturn(receiver);
+        when(transactionRepository.save(any(TransactionModel.class))).thenReturn(transaction);
+        when(userRepository.save(any(UserModel.class))).thenReturn(sender).thenReturn(receiver);
 
-        Transaction savedTransaction = transactionService.saveTransaction(transaction);
+        TransactionModel savedTransaction = transactionService.saveTransaction(transaction);
 
         assertThat(savedTransaction).isEqualTo(transaction);
         assertThat(sender.getBalance()).isEqualTo(80.0); // Vérifie que le solde de l'expéditeur a été mis à jour
@@ -95,7 +94,7 @@ public class TransactionServiceTest {
     public void testSaveTransactionInsufficientFunds() {
         sender.setBalance(10.0); // Solde insuffisant
 
-        Transaction transaction = new Transaction();
+        TransactionModel transaction = new TransactionModel();
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
         transaction.setAmount(20.0);
@@ -113,16 +112,16 @@ public class TransactionServiceTest {
 
     @Test
     public void testGetAllTransactionsForUser() {
-        List<Transaction> senderTransactions = new ArrayList<>();
-        List<Transaction> receiverTransactions = new ArrayList<>();
+        List<TransactionModel> senderTransactions = new ArrayList<>();
+        List<TransactionModel> receiverTransactions = new ArrayList<>();
 
-        Transaction transaction1 = new Transaction();
+        TransactionModel transaction1 = new TransactionModel();
         transaction1.setSender(sender);
         transaction1.setReceiver(receiver);
         transaction1.setAmount(20.0);
         senderTransactions.add(transaction1);
 
-        Transaction transaction2 = new Transaction();
+        TransactionModel transaction2 = new TransactionModel();
         transaction2.setSender(receiver);
         transaction2.setReceiver(sender);
         transaction2.setAmount(10.0);
@@ -131,7 +130,7 @@ public class TransactionServiceTest {
         when(transactionRepository.findBySender(sender)).thenReturn(senderTransactions);
         when(transactionRepository.findByReceiver(sender)).thenReturn(receiverTransactions);
 
-        List<Transaction> transactions = transactionService.getAllTransactionsForUser(sender);
+        List<TransactionModel> transactions = transactionService.getAllTransactionsForUser(sender);
 
         assertThat(transactions).hasSize(2);
         assertThat(transactions).contains(transaction1, transaction2);

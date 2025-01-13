@@ -1,9 +1,10 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,17 +25,22 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        Optional<UserModel> userByLogin = userRepository.findByEmail(email);
+        return userByLogin.map(userModel -> User.builder()
+                .username(userModel.getEmail())
+                .password(userModel.getPassword())
+                .build()).orElse(null);
+
     }
 
-    public Optional<User> getUserById(Integer id) {
+    public Optional<UserModel> getUserById(Integer id) {
         return userRepository.findById(id);
     }
 
-    public Optional<User> getUserByEmailAndPassword(String email, String password) {
+    public Optional<UserModel> getUserByEmailAndPassword(String email, String password) {
         // Récupérer l'utilisateur par email
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<UserModel> user = userRepository.findByEmail(email);
         // Vérifier si l'utilisateur est présent et le mot de passe correspond
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
             return user; // Retourner l'utilisateur si le mot de passe est correct
@@ -42,7 +48,7 @@ public class UserService implements UserDetailsService {
         return Optional.empty(); // Retourner vide si l'utilisateur n'existe pas ou le mot de passe est incorrect
     }
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<UserModel> findByEmail(String email) {
         // Récupérer l'utilisateur par email
         return userRepository.findByEmail(email);
     }
@@ -52,7 +58,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public User saveUser(User user) {
+    public UserModel saveUser(UserModel user) {
         // Validation pour s'assurer que l'utilisateur n'existe pas déjà
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Cet email est déjà utilisé !");
@@ -65,6 +71,19 @@ public class UserService implements UserDetailsService {
     private String hashPassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+
+//    public void displayAllUsers() {
+//        List<User> users = (List<User>) userRepository.findAll();
+//        System.out.println("Liste des utilisateurs :");
+//        if (users.isEmpty()) {
+//            System.out.println("Aucun utilisateur trouvé.");
+//        } else {
+//            for (User user : users) {
+//                System.out.println("ID: " + user.getId() + ", Nom: " + user.getName() + ", Email: " + user.getEmail());
+//            }
+//        }
+//    }
 
 }
 

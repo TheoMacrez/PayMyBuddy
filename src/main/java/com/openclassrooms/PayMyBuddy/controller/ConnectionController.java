@@ -1,6 +1,6 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,11 +26,11 @@ public class ConnectionController {
 
     // Ajouter une nouvelle connexion
     @PostMapping
-    public String addConnection(@RequestParam String email, @AuthenticationPrincipal User user, Model model) {
-        Optional<User> userToConnect = connectionService.findByEmail(email);
+    public String addConnection(@RequestParam String email, @AuthenticationPrincipal UserModel user, Model model) {
+        Optional<UserModel> userToConnect = connectionService.findByEmail(email);
 
         if (userToConnect.isPresent()) {
-            User targetUser = userToConnect.get();
+            UserModel targetUser = userToConnect.get();
             if (!user.getConnections().contains(targetUser)) {
                 connectionService.addConnection(user, targetUser);
                 model.addAttribute("message", "Connexion ajoutée avec succès !");

@@ -1,9 +1,9 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.crypto.password.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,6 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
-    
 
     // Page de connexion
     @GetMapping("/login")
@@ -42,23 +41,20 @@ public class UserController {
 
         // Laissez Spring Security gérer l'authentification
         // En cas d'échec, Spring Security redirigera vers /login?error
-        return "redirect:/users/profile"; // Redirection vers le profil si l'authentification réussit
+        return "redirect:/profile"; // Redirection vers le profil si l'authentification réussit
     }
 
     // Endpoint pour inscrire un nouvel utilisateur
     @PostMapping("/signup")
-    public String registerUser(User user) {
+    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+        UserModel user = new UserModel();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
         userService.saveUser(user);
-        return "redirect:/users/login"; // Redirection vers la page de connexion après inscription
+        return "redirect:/users/login?success"; // Redirection vers la page de connexion après inscription
     }
 
-    @GetMapping("/profile")
-    public String profilePage(Model model, @SessionAttribute("user") User user) {
-        model.addAttribute("username", user.getName());
-        model.addAttribute("email", user.getEmail());
-        model.addAttribute("password", user.getPassword()); // Pour des raisons de sécurité, évitez d'afficher le mot de passe
-        return "profile"; // Nom du fichier profile.html dans le dossier templates
-    }
 
 }
 

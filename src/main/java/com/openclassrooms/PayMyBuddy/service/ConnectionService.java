@@ -1,6 +1,6 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.*;
@@ -15,7 +15,7 @@ public class ConnectionService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addConnection(User user1, User user2) {
+    public void addConnection(UserModel user1, UserModel user2) {
         if (!user1.equals(user2) && !user1.getConnections().contains(user2)) {
             user1.getConnections().add(user2);
             user2.getConnections().add(user1);
@@ -23,11 +23,11 @@ public class ConnectionService {
         }
     }
 
-    public List<User> getFriends(User user) {
+    public List<UserModel> getFriends(UserModel user) {
         return user.getConnections();
     }
 
-    public void removeConnection(User user1, User user2) {
+    public void removeConnection(UserModel user1, UserModel user2) {
         if (user1.getConnections().contains(user2)) {
             user1.getConnections().remove(user2);
             user2.getConnections().remove(user1);
@@ -35,7 +35,7 @@ public class ConnectionService {
         }
     }
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<UserModel> findByEmail(String email) {
         return userRepository.findByEmail(email); // Assurez-vous que cette méthode est définie dans UserRepository
     }
 }

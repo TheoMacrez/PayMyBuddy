@@ -1,5 +1,6 @@
 package com.openclassrooms.PayMyBuddy.config;
 
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,16 +18,17 @@ import org.springframework.security.web.authentication.*;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(new CustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/signup", "/users/login","/**").permitAll() // Autoriser l'accès aux pages de connexion et d'inscription
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/users/signup", "/users/login", "/login-test.html","/styles/*").permitAll() // Autoriser l'accès aux pages de connexion et d'inscription
                         .anyRequest().authenticated() // Toute autre requête nécessite une authentification
                 )
                 .formLogin(form -> form
-                        .loginPage("/users/login") // Page de connexion personnalisée
+                        .loginPage("/users/login")
+                        .defaultSuccessUrl("/profile", true)// Page de connexion personnalisée
                         .permitAll() // Permet à tous d'accéder à la page de connexion
                 )
                 .logout(logout -> logout

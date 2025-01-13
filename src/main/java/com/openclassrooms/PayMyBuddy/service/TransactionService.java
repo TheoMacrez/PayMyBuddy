@@ -1,11 +1,11 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.repository.TransactionRepository;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 import jakarta.transaction.*;
 
-import com.openclassrooms.PayMyBuddy.model.Transaction;
+import com.openclassrooms.PayMyBuddy.model.TransactionModel;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -22,7 +22,7 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository; // Pour vérifier les soldes
 
-    public Optional<Transaction> getTransactionById(Integer id) {
+    public Optional<TransactionModel> getTransactionById(Integer id) {
         return transactionRepository.findById(id);
     }
 
@@ -31,7 +31,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction saveTransaction(Transaction transaction) {
+    public TransactionModel saveTransaction(TransactionModel transaction) {
         // Vérification du solde de l'expéditeur
         if (transaction.getSender().getBalance() < transaction.getAmount()) {
             throw new InsufficientFundsException("Fonds insuffisants !");
@@ -46,8 +46,8 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public List<Transaction> getAllTransactionsForUser(User user) {
-        List<Transaction> transactions = new ArrayList<>();
+    public List<TransactionModel> getAllTransactionsForUser(UserModel user) {
+        List<TransactionModel> transactions = new ArrayList<>();
         transactions.addAll(transactionRepository.findBySender(user));
         transactions.addAll(transactionRepository.findByReceiver(user));
         return transactions;

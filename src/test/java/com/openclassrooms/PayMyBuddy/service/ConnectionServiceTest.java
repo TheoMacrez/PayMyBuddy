@@ -1,7 +1,6 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.model.User;
-import com.openclassrooms.PayMyBuddy.service.ConnectionService;
+import com.openclassrooms.PayMyBuddy.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,17 +23,17 @@ public class ConnectionServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private User user1;
-    private User user2;
+    private UserModel user1;
+    private UserModel user2;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        user1 = new User();
+        user1 = new UserModel();
         user1.setId(1);
         user1.setConnections(new ArrayList<>());
 
-        user2 = new User();
+        user2 = new UserModel();
         user2.setId(2);
         user2.setConnections(new ArrayList<>());
     }
@@ -70,7 +69,7 @@ public class ConnectionServiceTest {
     public void testGetFriends() {
         user1.getConnections().add(user2);
 
-        List<User> friends = connectionService.getFriends(user1);
+        List<UserModel> friends = connectionService.getFriends(user1);
 
         assertThat(friends).contains(user2);
     }
