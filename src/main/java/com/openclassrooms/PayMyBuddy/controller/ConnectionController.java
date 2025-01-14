@@ -2,12 +2,16 @@ package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.service.ConnectionService;
+import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -17,30 +21,37 @@ public class ConnectionController {
     @Autowired
     private ConnectionService connectionService;
 
-    // Afficher le formulaire d'ajout de connexion
+
     @GetMapping
-    public String showAddConnectionForm(Model model) {
-        model.addAttribute("email", ""); // Pour le champ d'email
-        return "addConnection"; // Nom de la vue Thymeleaf
+    public String showAddConnectionForm() {
+        return "connections"; // Nom de la vue Thymeleaf
     }
 
     // Ajouter une nouvelle connexion
     @PostMapping
-    public String addConnection(@RequestParam String email, @AuthenticationPrincipal UserModel user, Model model) {
-        Optional<UserModel> userToConnect = connectionService.findByEmail(email);
+    public String addConnection(@RequestParam String email, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        Optional<UserModel> principalUserOpt = connectionService.findByEmail(userDetails.getUsername());
+        Optional<UserModel> userToConnectOpt = connectionService.findByEmail(email);
 
-        if (userToConnect.isPresent()) {
-            UserModel targetUser = userToConnect.get();
-            if (!user.getConnections().contains(targetUser)) {
-                connectionService.addConnection(user, targetUser);
-                model.addAttribute("message", "Connexion ajoutée avec succès !");
+        if (userToConnectOpt.isPresent() && principalUserOpt.isPresent() && !Objects.equals(email, userDetails.getUsername())) {
+            UserModel principalUser = principalUserOpt.get();
+            UserModel userToConnect = userToConnectOpt.get();
+
+            if (!principalUser.getConnections().contains(userToConnect)) {
+                connectionService.addConnection(principalUser, userToConnect);
+                redirectAttributes.addFlashAttribute("successMessage", "Connexion ajoutée avec succès !");
             } else {
-                model.addAttribute("error", "Vous êtes déjà connecté à cet utilisateur.");
+                redirectAttributes.addFlashAttribute("errorMessage", "Vous êtes déjà connecté à cet utilisateur.");
             }
         } else {
-            model.addAttribute("error", "Aucun utilisateur trouvé avec cet email.");
+            if (Objects.equals(email, userDetails.getUsername())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Vous ne pouvez pas vous ajouter vous-même");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Aucun utilisateur trouvé avec cet email.");
+            }
         }
 
-        return "addConnection"; // Rediriger vers le formulaire avec un message
+        return "redirect:/connections"; // Rediriger vers le formulaire avec un message
     }
 }
+

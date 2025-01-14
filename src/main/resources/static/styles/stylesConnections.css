@@ -1,0 +1,88 @@
+/* Style général du conteneur de connexions */
+.connections-container {
+    width: 500px; /* Largeur selon la maquette */
+    height: auto; /* Hauteur automatique */
+    margin: 0 auto; /* Centrage horizontal */
+    padding: 10px; /* Espacement interne */
+    border-radius: 0; /* Pas de coins arrondis */
+    background-color: #FFFFFF; /* Couleur de fond */
+    opacity: 1; /* Assurez-vous que l'opacité est à 100% */
+    display: flex; /* Utiliser Flexbox pour centrer les éléments */
+    flex-direction: column; /* Aligner les éléments en colonne */
+    align-items: center; /* Centrer horizontalement */
+}
+
+/* Style du formulaire */
+.connections-form {
+    display: flex; /* Flexbox pour aligner les éléments */
+    flex-direction: column; /* Alignement verticalement */
+    align-items: flex-start; /* Aligner à gauche */
+    width: 100%; /* Prendre toute la largeur */
+}
+
+/* Style des groupes de formulaire */
+.form-group {
+    display: flex; /* Utiliser Flexbox pour aligner les éléments */
+    flex-direction: column; /* Aligner verticalement */
+    width: 100%; /* Prendre toute la largeur */
+    margin-bottom: 10px; /* Espacement entre les groupes */
+}
+
+/* Style des labels */
+label {
+    margin-bottom: 5px; /* Espacement sous le label */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-weight: bold; /* Texte en gras */
+    font-size: 24px; /* Taille de la police */
+    text-align: left; /* Alignement à gauche */
+}
+
+/* Style des champs de saisie */
+.input-field {
+    width: 100%; /* Largeur à 100% */
+    height: 60px; /* Hauteur du champ */
+    border: 1px solid #E0E0E0; /* Bordure de 1 pixel */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 10px; /* Espacement interne */
+    box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
+}
+
+/* Style du bouton de soumission */
+.button-submit {
+    width: 205px; /* Largeur du bouton */
+    height: 64px; /* Hauteur du bouton */
+    background-color: #F69F1D; /* Couleur de fond orange */
+    border: none; /* Pas de bordure */
+    border-radius: 8px; /* Coins arrondis */
+    color: white; /* Couleur du texte */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-weight: bold; /* Texte en gras */
+    font-size: 24px; /* Taille de la police */
+    text-align: center; /* Centrer le texte */
+    display: flex; /* Utiliser Flexbox pour centrer le texte */
+    align-items: center; /* Centrer verticalement */
+    justify-content: center; /* Centrer horizontalement */
+    cursor: pointer; /* Curseur en forme de main */
+    margin-left: auto; /* Pousser le bouton à droite */
+}
+
+/* Style des alertes */
+.alert {
+    padding: 10px; /* Espacement interne */
+    margin-top: 10px; /* Espacement au-dessus */
+    border-radius: 5px; /* Coins arrondis */
+    width: 100%; /* S'assurer que l'alerte prend toute la largeur */
+    text-align: center; /* Centrer le texte */
+}
+
+/* Style pour le message de succès */
+.alert-success {
+    background-color: #d4edda; /* Couleur de fond pour le succès */
+    color: #155724; /* Couleur du texte pour le succès */
+}
+
+/* Style pour le message d'erreur */
+.alert-danger {
+    background-color: #f8d7da; /* Couleur de fond pour l'erreur */
+    color: #721c24; /* Couleur du texte pour l'erreur */
+}

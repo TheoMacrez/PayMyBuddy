@@ -2,9 +2,52 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - PayMyBuddy</title>
+    <link rel="stylesheet" th:href="@{/styles/stylesTransactions.css}">
 </head>
 <body>
+<div th:replace="~{navigation.html}"></div>
+<div class="transaction-container">
+    <form th:action="@{/transactions}" method="post"> <!-- Action pour soumettre le formulaire -->
+        <div class="form-group">
+            <select id="connection" name="connection" required>
+                <option value="" disabled selected>Choisissez une relation</option>
+                <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.username}"></option>
+            </select>
+        </div>
 
+        <div class="form-group">
+            <textarea id="description" name="description" rows="4" placeholder="Description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="amount" name="amount" min="0" step="0.01" required />
+            <span class="currency-sign">€</span>
+        </div>
+
+        <button type="submit">Payer</button>
+    </form>
+</div>
+<div class="transactions-container">
+    <h1>Mes Transactions</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Relation</th>
+            <th>Description</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transactionData : ${transactions}">
+            <td th:text="${transactionData.state == T(com.openclassrooms.PayMyBuddy.util.TransactionUserState).SENDER
+            ? transactionData.receiver.username : transactionData.sender.username}"></td>
+            <td th:text="${transactionData.description}"></td>
+            <td th:text="${transactionData.amount}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -1,0 +1,16 @@
+.amount-container {
+    display: flex;
+    align-items: center;
+    position: relative; /* Pour le positionnement absolu du span */
+}
+
+.amount-container input {
+    width: 100%; /* Ajustez la largeur selon vos besoins */
+    padding-right: 30px; /* Espace pour le signe € */
+}
+
+.amount-container .currency-sign {
+    position: absolute;
+    right: 10px; /* Ajustez la position selon vos besoins */
+    font-weight: bold;
+}

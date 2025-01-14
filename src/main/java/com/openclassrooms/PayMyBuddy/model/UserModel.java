@@ -53,17 +53,6 @@ public class UserModel implements UserDetails {
     )
     private List<UserModel> connections = new ArrayList<>();
 
-    // Méthodes pour ajouter/retirer des connexions
-    public void addConnection(UserModel user) {
-        connections.add(user);
-        user.getConnections().add(this);
-    }
-
-    public void removeConnection(UserModel user) {
-        connections.remove(user);
-        user.getConnections().remove(this);
-    }
-
 
     @Override
     public boolean equals(Object obj) {
