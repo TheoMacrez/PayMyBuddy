@@ -41,6 +41,8 @@
     border-radius: 8px; /* Coins arrondis */
     padding: 10px; /* Espacement interne */
     box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-size: 20px;
 }
 /* Styles des placeholders */
 .input-field::placeholder {
@@ -86,4 +88,7 @@
     justify-content: center; /* Centrer horizontalement */
     margin: 20px auto; /* Marges pour centrer le bouton dans le conteneur */
     cursor: pointer; /* Curseur en forme de main */
+}
+.button-submit:hover {
+    background-color: #1A6BBF; /* Couleur de fond au survol */
 }

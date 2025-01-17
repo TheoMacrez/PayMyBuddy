@@ -8,6 +8,7 @@ import com.openclassrooms.PayMyBuddy.service.UserService;
 import com.openclassrooms.PayMyBuddy.util.InsufficientFundsException;
 import com.openclassrooms.PayMyBuddy.util.TransactionFrontData;
 import com.openclassrooms.PayMyBuddy.util.TransactionUserState;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +35,7 @@ public class TransactionController {
 
     // Afficher toutes les transactions pour l'utilisateur connecté
     @GetMapping
-    public String getTransactionsForUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String getTransactionsForUser(@AuthenticationPrincipal UserDetails userDetails, Model model, HttpServletRequest request) {
 
         Optional<UserModel> userOpt = userService.findByEmail(userDetails.getUsername());
 
@@ -64,7 +65,7 @@ public class TransactionController {
             List<UserModel> connections = connectionService.getFriends(user);
             model.addAttribute("connections", connections);
         }
-
+        model.addAttribute("currentUri",request.getRequestURI());
         return "transactions"; // Nom de la vue Thymeleaf
     }
 

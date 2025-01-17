@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Profil Utilisateur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - PayMyBuddy</title>
     <link rel="stylesheet" th:href="@{/styles/stylesProfile.css}">
-    <link rel="stylesheet" th:href="@{/styles/stylesHeader.css}">
 </head>
 <body>
 <!-- Inclusion du header -->
 <div th:replace="~{navigation.html}"></div>
 
 <div class="profile-container">
-    <p><strong>Username :</strong> <span th:text="${username}"></span></p>
-    <p><strong>Email :</strong> <span th:text="${email}"></span></p>
-    <p><strong>Mot de passe :</strong> <span th:text="${password}"></span></p>
+    <form class="profile-form" th:action="@{/profile}" method="post">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="usernameToModify" class="input-field" th:value="${username}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Mail</label>
+            <input type="email" id="email" name="emailToModify" class="input-field" th:value="${email}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <span class="password-text">Mot de passe</span>
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="button-submit">Modifier</button>
+        </div>
+    </form>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
 </div>
 </body>
 </html>

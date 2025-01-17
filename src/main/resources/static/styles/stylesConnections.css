@@ -32,8 +32,7 @@
 label {
     margin-bottom: 5px; /* Espacement sous le label */
     font-family: 'Inter', sans-serif; /* Police Inter */
-    font-weight: bold; /* Texte en gras */
-    font-size: 24px; /* Taille de la police */
+    font-size: 20px; /* Taille de la police */
     text-align: left; /* Alignement à gauche */
 }
 
@@ -45,7 +44,16 @@ label {
     border-radius: 8px; /* Coins arrondis */
     padding: 10px; /* Espacement interne */
     box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-size: 20px; /* Taille de la police */
 }
+/* Styles des placeholders */
+.input-field::placeholder {
+    color: #E0E0E0; /* Couleur du texte du placeholder */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-size: 20px; /* Taille de la police */
+}
+
 
 /* Style du bouton de soumission */
 .button-submit {
@@ -64,6 +72,9 @@ label {
     justify-content: center; /* Centrer horizontalement */
     cursor: pointer; /* Curseur en forme de main */
     margin-left: auto; /* Pousser le bouton à droite */
+}
+.button-submit:hover {
+    background-color: #D68A1B; /* Couleur de fond au survol */
 }
 
 /* Style des alertes */

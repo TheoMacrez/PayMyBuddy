@@ -6,6 +6,13 @@ header {
     color: black; /* Couleur du texte en noir pour un bon contraste */
     padding: 10px 20px; /* Espacement intérieur : 10px en haut et en bas, 20px à gauche et à droite */
     font-family: 'Inter', sans-serif; /* Utilisation de la police Inter */
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.title
+{
+    font-size: 20px;
 }
 
 .header-container {
@@ -29,8 +36,19 @@ nav ul li a {
     color: black; /* Couleur du texte des liens en noir */
     text-decoration: none; /* Supprime le soulignement par défaut des liens */
     font-weight: bold; /* Met le texte en gras */
+    padding: 10px 15px; /* Ajoute un espacement interne pour le lien */
+    border-radius: 5px; /* Coins arrondis pour un meilleur look */
+    transition: background-color 0.3s; /* Transition douce pour le changement de couleur */
 }
 
 nav ul li a:hover {
     text-decoration: underline; /* Ajoute un soulignement au survol du lien */
+}
+
+/* Styles pour le lien actif */
+nav ul li a.active {
+    background-color: none; /* Couleur de fond pour le bouton actif */
+    color: #207FEE; /* Couleur du texte pour le bouton actif */
+    font-weight: bold; /* Mettre le texte en gras */
+
 }

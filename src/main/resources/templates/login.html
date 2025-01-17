@@ -15,8 +15,8 @@
     <div th:if="${param.error}" class="error-message" style="color: red;">
         Identifiants incorrects. Veuillez réessayer.
     </div>
-    <div th:if="${param.logout}">
-        Déconnexion réussi.
+    <div th:if="${logoutMessage}" class="error-message" style="color: green;">
+        <span th:text="${logoutMessage}"></span>
     </div>
     <form class="login-form" th:action="@{/users/login}" method="post">
         <button class="button-paymybuddy">Pay My Buddy</button>

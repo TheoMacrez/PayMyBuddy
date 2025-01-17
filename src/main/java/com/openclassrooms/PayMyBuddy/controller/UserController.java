@@ -23,7 +23,10 @@ public class UserController {
 
     // Page de connexion
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(@RequestParam(value = "logout", required = false) String logout, Model model) {
+        if (logout != null) {
+            model.addAttribute("logoutMessage", "Déconnexion réussie.");
+        }
         return "login"; // Nom du fichier login.html dans le dossier templates
     }
 
@@ -31,17 +34,6 @@ public class UserController {
     @GetMapping("/signup")
     public String signupPage() {
         return "signup"; // Nom du fichier signup.html
-    }
-
-    // Endpoint pour connecter un utilisateur
-    @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password, Model model) {
-
-        logger.debug("Tentative de connexion avec Email: {}", email);
-
-        // Laissez Spring Security gérer l'authentification
-        // En cas d'échec, Spring Security redirigera vers /login?error
-        return "redirect:/profile"; // Redirection vers le profil si l'authentification réussit
     }
 
     // Endpoint pour inscrire un nouvel utilisateur

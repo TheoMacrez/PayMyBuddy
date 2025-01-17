@@ -28,7 +28,7 @@ public class SpringSecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/users/login")
-                        .defaultSuccessUrl("/profile", true)// Page de connexion personnalisée
+                        .defaultSuccessUrl("/transactions", true)// Page de connexion personnalisée
                         .permitAll() // Permet à tous d'accéder à la page de connexion
                 )
                 .logout(logout -> logout

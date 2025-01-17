@@ -1,23 +1,98 @@
+/* stylesProfile.css */
+
+/* Assurez-vous que la police Inter est appliquée à tout le corps */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif; /* Police Inter */
 }
 
-.header-container {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-nav ul {
-    list-style-type: none;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
+/* Styles pour le conteneur du profil */
 .profile-container {
     text-align: center;
     margin-top: 50px;
+    position: relative; /* Pour le positionnement du bouton */
+}
+
+/* Styles pour le formulaire */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligner les éléments à gauche */
+    max-width: 400px; /* Largeur maximale du formulaire */
+    margin: 0 auto; /* Centrer le formulaire */
+}
+
+/* Styles pour les groupes de formulaire */
+.form-group {
+    display: flex; /* Utiliser Flexbox pour aligner les éléments */
+    align-items: center; /* Aligner verticalement les éléments */
+    margin-bottom: 20px; /* Espacement entre les champs */
+    width: 100%; /* Prendre toute la largeur disponible */
+}
+
+/* Styles pour les labels */
+label {
+    font-weight: bold; /* Mettre le label en gras */
+    font-size: 16px; /* Taille de police pour le label */
+    margin-right: 10px; /* Espacement à droite du label */
+    text-align: left; /* Alignement à gauche */
+    width: 120px; /* Largeur fixe pour le label */
+}
+
+/* Styles pour les champs de saisie */
+.input-field {
+    width: 100%; /* Prendre toute la largeur restante */
+    padding: 10px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    font-size: 16px; /* Taille de police pour le champ de saisie */
+}
+
+/* Styles pour le bouton de soumission */
+.button-submit {
+    width: 205px; /* Largeur du bouton */
+    height: 64px; /* Hauteur du bouton */
+    background-color: #F69F1D; /* Couleur de fond orange */
+    border: none; /* Pas de bordure */
+    border-radius: 8px; /* Coins arrondis */
+    color: white; /* Couleur du texte */
+    font-family: 'Inter', sans-serif; /* Police Inter */
+    font-weight: bold; /* Texte en gras */
+    font-size: 24px; /* Taille de la police */
+    text-align: center; /* Centrer le texte */
+    display: flex; /* Utiliser Flexbox pour centrer le texte */
+    align-items: center; /* Centrer verticalement */
+    justify-content: center; /* Centrer horizontalement */
+    cursor: pointer; /* Curseur en forme de main */
+    bottom: 10px; /* Distance du bas */
+    right: 10px; /* Distance de la droite */
+}
+
+.button-submit:hover {
+    background-color: #D68A1B; /* Couleur de fond au survol */
+}
+/* Styles pour le conteneur du bouton */
+.button-container {
+    display: flex; /* Utiliser Flexbox pour aligner les éléments */
+    justify-content: flex-end; /* Aligner le bouton à droite */
+    width: 100%; /* Prendre toute la largeur disponible */
+    margin-top: 20px; /* Espacement au-dessus du bouton */
+}
+
+.alert {
+    padding: 10px; /* Espacement interne */
+    margin-top: 10px; /* Espacement au-dessus */
+    border-radius: 5px; /* Coins arrondis */
+    width: 100%; /* S'assurer que l'alerte prend toute la largeur */
+    text-align: center; /* Centrer le texte */
+}
+
+/* Style pour le message de succès */
+.alert-success {
+    background-color: #d4edda; /* Couleur de fond pour le succès */
+    color: #155724; /* Couleur du texte pour le succès */
+}
+
+/* Style pour le message d'erreur */
+.alert-danger {
+    background-color: #f8d7da; /* Couleur de fond pour l'erreur */
+    color: #721c24; /* Couleur du texte pour l'erreur */
 }

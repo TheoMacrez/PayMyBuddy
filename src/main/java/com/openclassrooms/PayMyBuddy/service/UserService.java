@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
@@ -27,8 +28,11 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Optional<UserModel> userByLogin = userRepository.findByEmail(email);
+        if (userByLogin.isEmpty()) {
+            throw new UsernameNotFoundException("Utilisateur non trouvé avec l'email: " + email);
+        }
         return userByLogin.map(userModel -> User.builder()
-                .username(userModel.getEmail())
+                .username(userModel.getUsername())
                 .password(userModel.getPassword())
                 .build()).orElse(null);
 
@@ -58,6 +62,7 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     public UserModel saveUser(UserModel user) {
         // Validation pour s'assurer que l'utilisateur n'existe pas déjà
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -65,6 +70,11 @@ public class UserService implements UserDetailsService {
         }
         // Hachage du mot de passe avant de le sauvegarder
         user.setPassword(hashPassword(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public UserModel editUser(UserModel user) {
         return userRepository.save(user);
     }
 

@@ -1,16 +1,79 @@
-.amount-container {
-    display: flex;
+/* stylesTransactions.css */
+
+/* Style général du conteneur de transactions */
+.transaction-container {
+    width: 80%; /* Largeur à 100% */
+    max-width: 1000px; /* Largeur maximale selon la maquette */
+    margin: 50px auto; /* Centrage vertical et horizontal */
+    padding: 20px; /* Espacement interne */
+    border: none; /* Retirer la bordure */
+    background-color: #FFFFFF; /* Couleur de fond */
+    font-family: 'Inter', sans-serif; /* Appliquer la police Inter */
+}
+
+/* Style du formulaire de transaction */
+.transaction-form {
+    display: flex; /* Flexbox pour aligner les éléments */
+    align-items: center; /* Alignement vertical centré */
+    justify-content: space-between; /* Espacement entre les éléments */
+    flex-wrap: nowrap; /* Ne pas permettre le passage à la ligne */
+}
+
+/* Style des groupes de formulaire */
+.form-group {
+    margin: 20px; /* Marges entre les groupes */
+}
+
+/* Style des champs de saisie */
+.input-field,
+textarea,
+select {
+    height: 60px; /* Hauteur fixe pour chaque champ */
+    border: 1px solid #E0E0E0; /* Bordure de 1 pixel */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 10px; /* Espacement interne */
+    box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
+    font-family: 'Inter', sans-serif; /* Appliquer la police Inter */
+    font-size: 24px;
+}
+
+/* Style spécifique pour le champ de sélection de connexion */
+#input-connection,
+#input-description {
+    width: 100%; /* Largeur de 40% pour les deux champs */
+    max-width: 1200px; /* Largeur maximale */
     align-items: center;
-    position: relative; /* Pour le positionnement absolu du span */
 }
 
-.amount-container input {
-    width: 100%; /* Ajustez la largeur selon vos besoins */
-    padding-right: 30px; /* Espace pour le signe € */
+/* Style pour changer la couleur du placeholder */
+#input-connection,
+#input-description::placeholder {
+    color: #828282; /* Couleur du placeholder en noir */
 }
 
-.amount-container .currency-sign {
-    position: absolute;
-    right: 10px; /* Ajustez la position selon vos besoins */
-    font-weight: bold;
+/* Style spécifique pour le champ de montant */
+#input-amount {
+    width: 60%; /* Largeur de 20% (deux fois plus petit) */
+    height: 100px; /* Hauteur plus élevée */
+    max-width: 180px; /* Largeur maximale */
+}
+
+/* Style du bouton de soumission */
+.button-submit {
+    height: 64px; /* Hauteur du bouton */
+    background-color: #207FEE; /* Couleur de fond */
+    border: none; /* Pas de bordure */
+    border-radius: 8px; /* Coins arrondis */
+    color: white; /* Couleur du texte */
+    font-family: 'Inter', sans-serif; /* Appliquer la police Inter */
+    font-weight: bold; /* Texte en gras */
+    font-size: 24px; /* Taille de la police */
+    text-align: center; /* Centrer le texte */
+    cursor: pointer; /* Curseur en forme de main */
+    padding: 0 20px; /* Espacement interne */
+    margin-left: auto; /* Pousse le bouton à droite */
+}
+
+.button-submit:hover {
+    background-color: #1A6BBF; /* Couleur de fond au survol */
 }
