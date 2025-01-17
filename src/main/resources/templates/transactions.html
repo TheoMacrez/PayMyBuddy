@@ -11,40 +11,46 @@
 <div class="transaction-container">
     <form class="transaction-form" th:action="@{/transactions}" method="post"> <!-- Action pour soumettre le formulaire -->
         <div class="form-group">
-            <select class="input-field" id="input-connection" name="connection" required>
+            <select class="input-field" id="input-connection" name="receiver" required>
                 <option value="" disabled selected>Choisissez une relation</option>
                 <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.username}"></option>
             </select>
         </div>
 
         <div class="form-group">
-            <textarea class="input-field" id="input-description" name="description" rows="4" placeholder="Description" required></textarea>
+            <textarea class="input-field" id="input-description" name="description" rows="4" placeholder="Description"></textarea>
         </div>
 
         <div class="form-group amount-container">
-            <input class="input-field" type="number" id="input-amount" name="amount" min="0" step="0.01" required />
+            <input class="input-field" type="number" id="input-amount" name="amount" min="0" step="0.01" placeholder="0" required />
             <span class="currency-sign">€</span>
         </div>
 
         <button class="button-submit" type="submit">Payer</button>
     </form>
 </div>
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
 <div class="transactions-table-container">
-    <h1>Mes Transactions</h1>
+    <h1 class="transactions-table-title">Mes Transactions</h1>
     <table>
         <thead>
         <tr>
-            <th>Relation</th>
-            <th>Description</th>
-            <th>Montant</th>
+            <th class="relation-title">Relation</th>
+            <th class="description-title">Description</th>
+            <th class="amount-title">Montant</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="transactionData : ${transactions}">
             <td th:text="${transactionData.state == T(com.openclassrooms.PayMyBuddy.util.TransactionUserState).SENDER
-            ? transactionData.receiver.username : transactionData.sender.username}"></td>
+            ? transactionData.receiverUsername : transactionData.senderUsername}"></td>
             <td th:text="${transactionData.description}"></td>
-            <td th:text="${transactionData.amount}"></td>
+            <td th:text="${transactionData.amountDraw}"></td>
         </tr>
         </tbody>
     </table>

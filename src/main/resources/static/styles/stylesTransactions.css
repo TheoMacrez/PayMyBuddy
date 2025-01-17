@@ -35,6 +35,7 @@ select {
     box-sizing: border-box; /* Inclure la bordure dans la largeur totale */
     font-family: 'Inter', sans-serif; /* Appliquer la police Inter */
     font-size: 24px;
+    color: black;
 }
 
 /* Style spécifique pour le champ de sélection de connexion */
@@ -77,3 +78,86 @@ select {
 .button-submit:hover {
     background-color: #1A6BBF; /* Couleur de fond au survol */
 }
+.alert {
+    padding: 10px; /* Espacement interne */
+    margin-top: 10px; /* Espacement au-dessus */
+    border-radius: 5px; /* Coins arrondis */
+    width: 100%; /* S'assurer que l'alerte prend toute la largeur */
+    text-align: center; /* Centrer le texte */
+}
+
+/* Style pour le message de succès */
+.alert-success {
+    background-color: #d4edda; /* Couleur de fond pour le succès */
+    color: #155724; /* Couleur du texte pour le succès */
+}
+
+/* Style pour le message d'erreur */
+.alert-danger {
+    background-color: #f8d7da; /* Couleur de fond pour l'erreur */
+    color: #721c24; /* Couleur du texte pour l'erreur */
+}
+
+/* Style pour le conteneur du tableau de transactions */
+.transactions-table-container {
+    width: 100%; /* Prendre toute la largeur */
+    height: 50vh; /* Prendre la moitié basse de la page */
+    margin: 20px 25px; /* Marges pour les bords de la page */
+    overflow-y: auto; /* Ajout d'un défilement si nécessaire */
+    font-family: 'Inter', sans-serif; /* Appliquer la police Inter */
+    border: 1px solid #E0E0E0; /* Bordure autour du conteneur */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 20px;
+    font-size: 24px;
+}
+.transactions-table-title
+{
+    font-size: 24px;
+}
+
+/* Style du tableau */
+table {
+    width: 100%; /* Prendre toute la largeur */
+    border-collapse: collapse; /* Fusionner les bordures */
+}
+
+/* Style des cellules du tableau */
+th, td {
+    padding: 12px; /* Espacement interne */
+    border-bottom: 1px solid #E0E0E0; /* Ligne entre chaque row */
+}
+
+/* Alignement spécifique des colonnes */
+td:first-child {
+    text-align: left; /* Caler à gauche pour la colonne "Relation" */
+}
+
+td:nth-child(2) {
+    text-align: center; /* Centrer pour la colonne "Description" */
+}
+
+td:last-child {
+    text-align: right; /* Caler à droite pour la colonne "Montant" */
+}
+
+/* Style pour les en-têtes */
+th {
+    background-color: transparent; /* Retirer le fond des en-têtes */
+    font-weight: bold; /* Gras pour les en-têtes */
+    text-align: left; /* Alignement par défaut à gauche */
+}
+/* Alignement spécifique pour le titre "Montant" */
+.amount-title {
+    text-align: right; /* Caler à droite pour la colonne "Montant" */
+}
+
+/* Alignement spécifique pour le titre "Relation" */
+.relation-title {
+    text-align: left; /* Caler à gauche pour la colonne "Relation" */
+}
+
+/* Alignement spécifique pour le titre "Description" */
+.description-title {
+    text-align: center; /* Centrer pour la colonne "Description" */
+}
+

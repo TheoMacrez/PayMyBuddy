@@ -70,12 +70,13 @@ public class UserService implements UserDetailsService {
         }
         // Hachage du mot de passe avant de le sauvegarder
         user.setPassword(hashPassword(user.getPassword()));
+        user.setBalance(100.0);
         return userRepository.save(user);
     }
 
     @Transactional
-    public UserModel editUser(UserModel user) {
-        return userRepository.save(user);
+    public void editUser(UserModel user) {
+        userRepository.save(user);
     }
 
     private String hashPassword(String password) {

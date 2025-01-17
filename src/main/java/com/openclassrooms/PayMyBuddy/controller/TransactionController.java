@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,21 +45,14 @@ public class TransactionController {
         {
             UserModel user = userOpt.get();
             List<TransactionModel> transactions = transactionService.getAllTransactionsForUser(user);
+
+            // Trier les transactions de la plus récente à la plus ancienne
+            transactions.sort((t1, t2) -> t2.getCreatedAt().compareTo(t1.getCreatedAt()));
+
             List<TransactionFrontData> transactionFrontDataList  = new ArrayList<>();
             for (TransactionModel transactionModel : transactions)
             {
-                TransactionFrontData newData = new TransactionFrontData();
-                newData.setDescription(transactionModel.getDescription());
-                newData.setAmount(transactionModel.getAmount());
-                newData.setSender(transactionModel.getSender());
-                newData.setReceiver(transactionModel.getReceiver());
-                if(transactionModel.getSender().equals(user))
-                {
-                    newData.setState(TransactionUserState.SENDER);
-                }
-                else {
-                    newData.setState(TransactionUserState.RECEIVER);
-                }
+                TransactionFrontData newData = TransactionFrontData.getTransactionFrontData(transactionModel, user);
                 transactionFrontDataList.add(newData);
             }
             model.addAttribute("transactions", transactionFrontDataList);
@@ -69,15 +64,36 @@ public class TransactionController {
         return "transactions"; // Nom de la vue Thymeleaf
     }
 
+
+
     // Créer une nouvelle transaction
     @PostMapping
-    public String createTransaction(@ModelAttribute TransactionModel transaction, @AuthenticationPrincipal UserModel user) {
-        transaction.setSender(user); // L'utilisateur connecté est l'expéditeur
-        try {
-            transactionService.saveTransaction(transaction);
-            return "redirect:/transactions"; // Rediriger vers la liste des transactions
-        } catch (InsufficientFundsException e) {
-            return "error"; // Afficher une page d'erreur (à créer)
+    public String createTransaction(@ModelAttribute TransactionModel transaction, @AuthenticationPrincipal UserDetails userDetails,  RedirectAttributes redirectAttributes) {
+
+        Optional<UserModel> userOpt = userService.findByEmail(userDetails.getUsername());
+        if(userOpt.isPresent())
+        {
+            UserModel user = userOpt.get();
+            transaction.setSender(user);
+
+//            // Récupérer le receiver à partir de l'ID
+//            Optional<UserModel> receiverOpt = userService.findByEmail(transaction.getReceiver().getEmail()); // Assurez-vous que cette méthode existe
+//            if (receiverOpt.isPresent()) {
+//                transaction.setReceiver(receiverOpt.get());
+//            } else {
+//                redirectAttributes.addFlashAttribute("errorMessage", "Le destinataire sélectionné n'existe pas !");
+//                return "redirect:/transactions";
+//            }
+
+            try {
+                transactionService.saveTransaction(transaction);
+                redirectAttributes.addFlashAttribute("successMessage", "Transfert réussi !");// Afficher une page d'erreur (à créer)
+                // Rediriger vers la liste des transactions
+            } catch (InsufficientFundsException e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Vos fonds sont insuffisants pour cette transaction !");// Afficher une page d'erreur (à créer)
+            }
         }
+
+        return "redirect:/transactions";
     }
 }
