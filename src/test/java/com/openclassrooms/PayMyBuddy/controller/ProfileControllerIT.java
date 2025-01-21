@@ -3,6 +3,7 @@ package com.openclassrooms.PayMyBuddy.controller;
 import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.repository.UserRepository;
 import com.openclassrooms.PayMyBuddy.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -58,7 +60,7 @@ public class ProfileControllerIT {
         existingUserOne.setUsername("existingUserOne");
         existingUserOne.setPassword("password");
 
-        userRepository.save(existingUserOne);
+        userService.saveUser(existingUserOne);
 
         // Simulez le service pour retourner un utilisateur existant
         UserModel existingUserTwo = new UserModel();
@@ -66,13 +68,42 @@ public class ProfileControllerIT {
         existingUserTwo.setUsername("existingUserTwo");
         existingUserTwo.setPassword("password");
 
-        userRepository.save(existingUserTwo);
+        userService.saveUser(existingUserTwo);
+
+        // Debug output
+        System.out.println("Trying to find existing users...");
+
+        var userOne = userService.findByEmail("existingemailone@example.com");
+        var userTwo = userService.findByEmail("existingemailtwo@example.com");
+
+//        if (userOne.isPresent()) {
+//            System.out.println("Found user one: " + userOne.get().getEmail());
+//        } else {
+//            System.out.println("User one not found!");
+//        }
+//
+//        if (userTwo.isPresent()) {
+//            System.out.println("Found user two: " + userTwo.get().getEmail());
+//        } else {
+//            System.out.println("User two not found!");
+//        }
+
+        // Assertions
+        assertTrue(userOne.isPresent(), "User one should be present");
+        assertTrue(userTwo.isPresent(), "User two should be present");
 
 
     }
 
+    @AfterEach
+    public void cleanAfter()
+    {
+        // Nettoyer la base de données après les tests
+        userRepository.deleteAll();
+    }
+
     @Test
-    @WithMockUser(username = "existingemail@example.com")
+    @WithMockUser(username = "existingemailone@example.com")
     public void testProfilePage() throws Exception {
         mockMvc.perform(get("/profile"))
                 .andExpect(status().isOk())
@@ -81,7 +112,7 @@ public class ProfileControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "existingemail@example.com")
+    @WithMockUser(username = "existingemailone@example.com")
     public void testProfileModification() throws Exception {
         mockMvc.perform(post("/profile")
                         .param("emailToModify", "newemail@example.com")
@@ -92,11 +123,11 @@ public class ProfileControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "existingemail@example.com")
+    @WithMockUser(username = "existingemailone@example.com")
     public void testProfileModificationWithExistingEmail() throws Exception {
         // Simulez ici le comportement du service pour retourner un utilisateur existant avec le même email
         mockMvc.perform(post("/profile")
-                        .param("emailToModify", "existingemail@example.com") // Email déjà utilisé
+                        .param("emailToModify", "existingemailtwo@example.com") // Email déjà utilisé
                         .param("usernameToModify", "newusername")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
@@ -104,12 +135,5 @@ public class ProfileControllerIT {
                 .andExpect(flash().attribute("errorMessage", "Cet email est déjà utilisé !"));
     }
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public UserService userService() {
-            return Mockito.mock(UserService.class); // Remplacez le bean par un mock explicite
-        }
-    }
 }
 
