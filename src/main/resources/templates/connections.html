@@ -8,6 +8,14 @@
 </head>
 <body>
 <div th:replace="~{navigation.html}"></div>
+
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
+
 <div class="connections-container">
     <form class="connections-form" th:action="@{/connections}" method="post">
         <div class="form-group">
@@ -17,11 +25,6 @@
         <button type="submit" class="button-submit">Ajouter</button>
     </form>
 </div>
-<div th:if="${errorMessage}" class="alert alert-danger">
-    <p th:text="${errorMessage}"></p>
-</div>
-<div th:if="${successMessage}" class="alert alert-success">
-    <p th:text="${successMessage}"></p>
-</div>
+
 </body>
 </html>

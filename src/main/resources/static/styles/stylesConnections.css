@@ -84,6 +84,7 @@ label {
     border-radius: 5px; /* Coins arrondis */
     width: 100%; /* S'assurer que l'alerte prend toute la largeur */
     text-align: center; /* Centrer le texte */
+    font-family: 'Inter', sans-serif;
 }
 
 /* Style pour le message de succès */

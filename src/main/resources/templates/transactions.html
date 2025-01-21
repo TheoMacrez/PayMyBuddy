@@ -8,6 +8,13 @@
 </head>
 <body>
 <div th:replace="~{navigation.html}"></div>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
 <div class="transaction-container">
     <form class="transaction-form" th:action="@{/transactions}" method="post"> <!-- Action pour soumettre le formulaire -->
         <div class="form-group">
@@ -28,13 +35,7 @@
 
         <button class="button-submit" type="submit">Payer</button>
     </form>
-</div>
-<div th:if="${errorMessage}" class="alert alert-danger">
-    <p th:text="${errorMessage}"></p>
-</div>
-<div th:if="${successMessage}" class="alert alert-success">
-    <p th:text="${successMessage}"></p>
-</div>
+
 <div class="transactions-table-container">
     <h1 class="transactions-table-title">Mes Transactions</h1>
     <table>

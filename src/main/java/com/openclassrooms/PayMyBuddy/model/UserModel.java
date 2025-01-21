@@ -78,6 +78,7 @@ public class UserModel implements UserDetails {
         return email; // Utiliser l'email comme nom d'utilisateur
     }
 
+
     public String getRawUsername()
     {
         return username;
