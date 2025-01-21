@@ -24,7 +24,13 @@ public class TransactionFrontData {
 
     private String amountDraw;
 
-
+    /**
+     * Récupérer toutes les informations d'une transactionModel pour l'afficher dans la vue Thymeleaf.
+     *
+     * @param transactionModel la transaction dont on doit récupérer les informations
+     * @param user le user qui a lancé cette transaction pour pouvoir définir si on doit afficher la transaction comme envoyée ou reçue.
+     * @return un objet TransactionFrontData que va lire la vue Thymeleaf
+     */
     public static TransactionFrontData getTransactionFrontData(TransactionModel transactionModel, UserModel user) {
         TransactionFrontData newData = new TransactionFrontData();
         newData.setDescription(transactionModel.getDescription());
@@ -43,7 +49,12 @@ public class TransactionFrontData {
         return newData;
     }
 
-    // Méthode pour formater le montant
+    /**
+     * Afficher le montant de la transaction dans un chiffre bien formaté.
+     *
+     * @param amount la montant de la transaction
+     * @return un string que va lire la vue Thymeleaf
+     */
     private static String formatAmount(Double amount) {
         DecimalFormat df = new DecimalFormat("#,##0.##"); // Format avec virgule pour les décimales
         return df.format(amount).replace(".", ","); // Remplace le point par une virgule

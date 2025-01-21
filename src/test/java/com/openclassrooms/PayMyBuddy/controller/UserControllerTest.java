@@ -3,7 +3,6 @@ package com.openclassrooms.PayMyBuddy.controller;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +24,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-public class UserControllerIT {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

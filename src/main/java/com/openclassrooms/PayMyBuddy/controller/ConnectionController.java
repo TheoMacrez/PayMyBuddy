@@ -22,17 +22,31 @@ public class ConnectionController {
     @Autowired
     private ConnectionService connectionService;
 
-
+    /**
+     * Afficher le formulaire pour ajouter une nouvelle connexion.
+     *
+     * @param model le modèle utilisé pour passer des attributs à la vue
+     * @param request l'objet HttpServletRequest pour obtenir l'URI actuelle
+     * @return le nom de la vue Thymeleaf à afficher
+     */
     @GetMapping
     public String showAddConnectionForm(Model model, HttpServletRequest request) {
-
-        model.addAttribute("currentUri",request.getRequestURI());
+        model.addAttribute("currentUri", request.getRequestURI());
         return "connections"; // Nom de la vue Thymeleaf
     }
 
-    // Ajouter une nouvelle connexion
+    /**
+     * Ajouter une nouvelle connexion entre l'utilisateur authentifié et un autre utilisateur.
+     *
+     * @param email l'email de l'utilisateur à connecter
+     * @param userDetails les détails de l'utilisateur authentifié
+     * @param redirectAttributes les attributs pour rediriger avec des messages flash
+     * @return une redirection vers le formulaire de connexions
+     */
     @PostMapping
-    public String addConnection(@RequestParam String email, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+    public String addConnection(@RequestParam String email,
+                                @AuthenticationPrincipal UserDetails userDetails,
+                                RedirectAttributes redirectAttributes) {
         Optional<UserModel> principalUserOpt = connectionService.findByEmail(userDetails.getUsername());
         Optional<UserModel> userToConnectOpt = connectionService.findByEmail(email);
 
@@ -57,4 +71,3 @@ public class ConnectionController {
         return "redirect:/connections"; // Rediriger vers le formulaire avec un message
     }
 }
-

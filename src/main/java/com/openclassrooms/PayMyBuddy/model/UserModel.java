@@ -79,6 +79,11 @@ public class UserModel implements UserDetails {
     }
 
 
+    /**
+     * Pouvour avoir accès à l'username de l'utilisateur et non son adresse email.
+     *
+     * @return le nom de l'utilisateur à afficher
+     */
     public String getRawUsername()
     {
         return username;

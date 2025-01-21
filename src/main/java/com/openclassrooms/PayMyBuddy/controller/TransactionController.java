@@ -7,7 +7,6 @@ import com.openclassrooms.PayMyBuddy.service.TransactionService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import com.openclassrooms.PayMyBuddy.util.InsufficientFundsException;
 import com.openclassrooms.PayMyBuddy.util.TransactionFrontData;
-import com.openclassrooms.PayMyBuddy.util.TransactionUserState;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,23 +33,29 @@ public class TransactionController {
     @Autowired
     private ConnectionService connectionService;
 
-    // Afficher toutes les transactions pour l'utilisateur connecté
+    /**
+     * Afficher toutes les transactions pour l'utilisateur connecté.
+     *
+     * @param userDetails les détails de l'utilisateur authentifié
+     * @param model le modèle utilisé pour passer des attributs à la vue
+     * @param request l'objet HttpServletRequest pour obtenir l'URI actuelle
+     * @return le nom de la vue Thymeleaf à afficher
+     */
     @GetMapping
-    public String getTransactionsForUser(@AuthenticationPrincipal UserDetails userDetails, Model model, HttpServletRequest request) {
-
+    public String getTransactionsForUser(@AuthenticationPrincipal UserDetails userDetails,
+                                         Model model,
+                                         HttpServletRequest request) {
         Optional<UserModel> userOpt = userService.findByEmail(userDetails.getUsername());
 
-        if(userOpt.isPresent())
-        {
+        if (userOpt.isPresent()) {
             UserModel user = userOpt.get();
             List<TransactionModel> transactions = transactionService.getAllTransactionsForUser(user);
 
             // Trier les transactions de la plus récente à la plus ancienne
             transactions.sort((t1, t2) -> t2.getCreatedAt().compareTo(t1.getCreatedAt()));
 
-            List<TransactionFrontData> transactionFrontDataList  = new ArrayList<>();
-            for (TransactionModel transactionModel : transactions)
-            {
+            List<TransactionFrontData> transactionFrontDataList = new ArrayList<>();
+            for (TransactionModel transactionModel : transactions) {
                 TransactionFrontData newData = TransactionFrontData.getTransactionFrontData(transactionModel, user);
                 transactionFrontDataList.add(newData);
             }
@@ -60,40 +64,35 @@ public class TransactionController {
             List<UserModel> connections = connectionService.getFriends(user);
             model.addAttribute("connections", connections);
         }
-        model.addAttribute("currentUri",request.getRequestURI());
+        model.addAttribute("currentUri", request.getRequestURI());
         return "transactions"; // Nom de la vue Thymeleaf
     }
 
-
-
-    // Créer une nouvelle transaction
+    /**
+     * Créer une nouvelle transaction.
+     *
+     * @param transaction l'objet TransactionModel contenant les détails de la transaction
+     * @param userDetails les détails de l'utilisateur authentifié
+     * @param redirectAttributes les attributs pour rediriger avec des messages flash
+     * @return une redirection vers la liste des transactions
+     */
     @PostMapping
-    public String createTransaction(@ModelAttribute TransactionModel transaction, @AuthenticationPrincipal UserDetails userDetails,  RedirectAttributes redirectAttributes) {
-
+    public String createTransaction(@ModelAttribute TransactionModel transaction,
+                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    RedirectAttributes redirectAttributes) {
         Optional<UserModel> userOpt = userService.findByEmail(userDetails.getUsername());
-        if(userOpt.isPresent())
-        {
+        if (userOpt.isPresent()) {
             UserModel user = userOpt.get();
             transaction.setSender(user);
 
-//            // Récupérer le receiver à partir de l'ID
-//            Optional<UserModel> receiverOpt = userService.findByEmail(transaction.getReceiver().getEmail()); // Assurez-vous que cette méthode existe
-//            if (receiverOpt.isPresent()) {
-//                transaction.setReceiver(receiverOpt.get());
-//            } else {
-//                redirectAttributes.addFlashAttribute("errorMessage", "Le destinataire sélectionné n'existe pas !");
-//                return "redirect:/transactions";
-//            }
-
             try {
                 transactionService.saveTransaction(transaction);
-                redirectAttributes.addFlashAttribute("successMessage", "Transfert réussi !");// Afficher une page d'erreur (à créer)
-                // Rediriger vers la liste des transactions
+                redirectAttributes.addFlashAttribute("successMessage", "Transfert réussi !");
             } catch (InsufficientFundsException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Vos fonds sont insuffisants pour cette transaction !");// Afficher une page d'erreur (à créer)
+                redirectAttributes.addFlashAttribute("errorMessage", "Vos fonds sont insuffisants pour cette transaction !");
             }
         }
 
-        return "redirect:/transactions";
+        return "redirect:/transactions"; // Rediriger vers la liste des transactions
     }
 }

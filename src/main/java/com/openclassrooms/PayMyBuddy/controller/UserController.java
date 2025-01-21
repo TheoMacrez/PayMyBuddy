@@ -18,10 +18,17 @@ import java.util.Optional;
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
-    // Page de connexion
+    /**
+     * Afficher la page de connexion.
+     *
+     * @param logout un paramètre optionnel pour indiquer si l'utilisateur a été déconnecté
+     * @param model le modèle utilisé pour passer des attributs à la vue
+     * @return le nom de la vue Thymeleaf à afficher
+     */
     @GetMapping("/login")
     public String loginPage(@RequestParam(value = "logout", required = false) String logout, Model model) {
         if (logout != null) {
@@ -30,15 +37,28 @@ public class UserController {
         return "login"; // Nom du fichier login.html dans le dossier templates
     }
 
-    // Page d'inscription
+    /**
+     * Afficher la page d'inscription.
+     *
+     * @return le nom de la vue Thymeleaf à afficher
+     */
     @GetMapping("/signup")
     public String signupPage() {
         return "signup"; // Nom du fichier signup.html
     }
 
-    // Endpoint pour inscrire un nouvel utilisateur
+    /**
+     * Inscrire un nouvel utilisateur.
+     *
+     * @param username le nom d'utilisateur à enregistrer
+     * @param email l'email de l'utilisateur à enregistrer
+     * @param password le mot de passe de l'utilisateur à enregistrer
+     * @return une redirection vers la page de connexion après inscription
+     */
     @PostMapping("/signup")
-    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+    public String registerUser(@RequestParam String username,
+                               @RequestParam String email,
+                               @RequestParam String password) {
         UserModel user = new UserModel();
         user.setUsername(username);
         user.setEmail(email);
@@ -46,7 +66,4 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/users/login?success"; // Redirection vers la page de connexion après inscription
     }
-
-
 }
-

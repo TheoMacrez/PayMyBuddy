@@ -30,30 +30,47 @@ public class ProfileController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Afficher la page de profil de l'utilisateur authentifié.
+     *
+     * @param model le modèle utilisé pour passer des attributs à la vue
+     * @param userDetails les détails de l'utilisateur authentifié
+     * @param request l'objet HttpServletRequest pour obtenir l'URI actuelle
+     * @return le nom de la vue Thymeleaf à afficher
+     */
     @GetMapping("/profile")
-    public String profilePage(Model model, @AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
-
+    public String profilePage(Model model,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              HttpServletRequest request) {
         Optional<UserModel> userModel = userService.findByEmail(userDetails.getUsername());
-        if(userModel.isPresent())
-        {
+        if (userModel.isPresent()) {
             model.addAttribute("username", userModel.get().getRawUsername());
             model.addAttribute("email", userModel.get().getEmail());
         }
-        model.addAttribute("currentUri",request.getRequestURI());
+        model.addAttribute("currentUri", request.getRequestURI());
         // Pour des raisons de sécurité, évitez d'afficher le mot de passe
         return "profile"; // Nom du fichier profile.html dans le dossier templates
     }
 
+    /**
+     * Modifier les informations de profil de l'utilisateur authentifié.
+     *
+     * @param emailToModify l'email à modifier
+     * @param usernameToModify le nom d'utilisateur à modifier
+     * @param userDetails les détails de l'utilisateur authentifié
+     * @param redirectAttributes les attributs pour rediriger avec des messages flash
+     * @return une redirection vers la page de profil
+     */
     @PostMapping("/profile")
-    public String profileModification(@RequestParam String emailToModify, @RequestParam String usernameToModify, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes)
-    {
+    public String profileModification(@RequestParam String emailToModify,
+                                      @RequestParam String usernameToModify,
+                                      @AuthenticationPrincipal UserDetails userDetails,
+                                      RedirectAttributes redirectAttributes) {
         Optional<UserModel> userModelOptional = userService.findByEmail(userDetails.getUsername());
-        if(userModelOptional.isPresent())
-        {
+        if (userModelOptional.isPresent()) {
             UserModel userModel = userModelOptional.get();
 
-            if(emailToModify.equals(userModel.getEmail()) && usernameToModify.equals(userModel.getRawUsername()))
-            {
+            if (emailToModify.equals(userModel.getEmail()) && usernameToModify.equals(userModel.getRawUsername())) {
                 return "redirect:/profile";
             }
 
@@ -62,7 +79,6 @@ public class ProfileController {
                 redirectAttributes.addFlashAttribute("errorMessage", "Cet email est déjà utilisé !");
                 return "redirect:/profile"; // Renvoyer à la page de profil avec l'erreur
             }
-
 
             userModel.setEmail(emailToModify);
             userModel.setUsername(usernameToModify);

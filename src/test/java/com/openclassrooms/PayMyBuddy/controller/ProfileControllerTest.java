@@ -7,25 +7,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -36,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-public class ProfileControllerIT {
+public class ProfileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -76,17 +68,6 @@ public class ProfileControllerIT {
         var userOne = userService.findByEmail("existingemailone@example.com");
         var userTwo = userService.findByEmail("existingemailtwo@example.com");
 
-//        if (userOne.isPresent()) {
-//            System.out.println("Found user one: " + userOne.get().getEmail());
-//        } else {
-//            System.out.println("User one not found!");
-//        }
-//
-//        if (userTwo.isPresent()) {
-//            System.out.println("Found user two: " + userTwo.get().getEmail());
-//        } else {
-//            System.out.println("User two not found!");
-//        }
 
         // Assertions
         assertTrue(userOne.isPresent(), "User one should be present");
@@ -114,6 +95,7 @@ public class ProfileControllerIT {
     @Test
     @WithMockUser(username = "existingemailone@example.com")
     public void testProfileModification() throws Exception {
+        // Simulez ici le comportement réussi du service pour modifier les informations d'utilisateur
         mockMvc.perform(post("/profile")
                         .param("emailToModify", "newemail@example.com")
                         .param("usernameToModify", "newusername")
@@ -121,6 +103,7 @@ public class ProfileControllerIT {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/profile"));
     }
+
 
     @Test
     @WithMockUser(username = "existingemailone@example.com")
