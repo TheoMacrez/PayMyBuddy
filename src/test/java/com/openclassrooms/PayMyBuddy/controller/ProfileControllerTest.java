@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -61,18 +60,6 @@ public class ProfileControllerTest {
         existingUserTwo.setPassword("password");
 
         userService.saveUser(existingUserTwo);
-
-        // Debug output
-        System.out.println("Trying to find existing users...");
-
-        var userOne = userService.findByEmail("existingemailone@example.com");
-        var userTwo = userService.findByEmail("existingemailtwo@example.com");
-
-
-        // Assertions
-        assertTrue(userOne.isPresent(), "User one should be present");
-        assertTrue(userTwo.isPresent(), "User two should be present");
-
 
     }
 

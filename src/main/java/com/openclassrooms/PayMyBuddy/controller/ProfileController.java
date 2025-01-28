@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,7 +47,7 @@ public class ProfileController {
             model.addAttribute("email", userModel.get().getEmail());
         }
         model.addAttribute("currentUri", request.getRequestURI());
-        // Pour des raisons de sécurité, évitez d'afficher le mot de passe
+
         return "profile"; // Nom du fichier profile.html dans le dossier templates
     }
 

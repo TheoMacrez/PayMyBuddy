@@ -2,7 +2,6 @@ package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.model.UserModel;
 import com.openclassrooms.PayMyBuddy.service.ConnectionService;
-import com.openclassrooms.PayMyBuddy.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
